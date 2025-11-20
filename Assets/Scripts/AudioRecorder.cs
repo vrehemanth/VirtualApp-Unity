@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
+
  
 public class AudioRecorder : MonoBehaviour
 {
@@ -68,89 +69,10 @@ public class AudioRecorder : MonoBehaviour
         Debug.Log("Recording stopped. Duration: " + (Time.time - startTime) + "s");
 
         // Optional: save or send directly to LLM later
-        SendToLLM(trimmedClip);
+        // 🎯 Send audio to Gemini via GeminiLLM
+        GeminiLLM.Instance.SendAudioToGemini(this, trimmedClip);
         // SaveWav("RecordedAudio.wav", trimmedClip);
         // Debug.Log("Saved trimmed audio to: " + Application.persistentDataPath);
-    }
-
-        // --- 🧠 Send Recorded Audio to Gemini API ---
-    private void SendToLLM(AudioClip clip)
-    {
-        StartCoroutine(SendAudioToGeminiCoroutine(clip));
-    }
-
-    private IEnumerator SendAudioToGeminiCoroutine(AudioClip clip)
-    {
-        Debug.Log("Preparing audio for Gemini API...");
-
-        // 1️⃣ Convert AudioClip to WAV bytes
-        byte[] wavBytes = WavUtility.FromAudioClip(clip);
-
-        // 2️⃣ Base64 encode the audio
-        string base64Audio = Convert.ToBase64String(wavBytes);
-
-        // 3️⃣ Construct JSON request
-        string prompt = "This is an audio of a person speaking in the classroom. Please return an array of 2 or 3 questions in JSON format.";
-
-        JObject requestJson = new JObject
-        {
-            ["contents"] = new JArray
-            {
-                new JObject
-                {
-                    ["parts"] = new JArray
-                    {
-                        new JObject { ["text"] = prompt },
-                        new JObject
-                        {
-                            ["inline_data"] = new JObject
-                            {
-                                ["mime_type"] = "audio/wav",
-                                ["data"] = base64Audio
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        string jsonData = requestJson.ToString();
-        Debug.Log("Sending audio to Gemini..." + GeminiConfig.API_KEY);
-
-        // 4️⃣ Setup HTTP request
-        string url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + GeminiConfig.API_KEY;
-        UnityWebRequest request = new UnityWebRequest(url, "POST");
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
-
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        // 5️⃣ Send request
-        yield return request.SendWebRequest();
-
-        // 6️⃣ Handle response
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log("✅ Response from Gemini: " + request.downloadHandler.text);
-
-            try
-            {
-                JObject response = JObject.Parse(request.downloadHandler.text);
-                string textOutput = (string)response["candidates"]?[0]?["content"]?["parts"]?[0]?["text"];
-                Debug.Log("🎯 Gemini Output:\n" + textOutput);
-                MessageManager.Instance.ShowMessage("🤖 Gemini Response:\n" + textOutput);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("Error parsing Gemini response: " + ex.Message);
-            }
-        }
-        else
-        {
-            Debug.LogError("❌ Request failed: " + request.error);
-            Debug.LogError("Response: " + request.downloadHandler.text);
-        }
     }
 
     //--- Helper: Save AudioClip as WAV ---

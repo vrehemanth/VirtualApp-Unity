@@ -50,4 +50,51 @@ public class WavUtility
             return stream.ToArray();
         }
     }
+    public static AudioClip ToAudioClip(byte[] wavFile, string clipName = "GeminiClip")
+    {
+        WAV wav = new WAV(wavFile);
+        AudioClip audioClip = AudioClip.Create(clipName, wav.SampleCount, 1, wav.Frequency, false);
+        audioClip.SetData(wav.LeftChannel, 0);
+        return audioClip;
+    }
+    // Helper class for reading WAV byte data
+    public class WAV
+    {
+        public float[] LeftChannel { get; private set; }
+        public int ChannelCount { get; private set; }
+        public int SampleCount { get; private set; }
+        public int Frequency { get; private set; }
+
+        public WAV(byte[] wav)
+        {
+            // Read channel count
+            ChannelCount = wav[22]; // 1 = mono, 2 = stereo
+            Frequency = BitConverter.ToInt32(wav, 24);
+
+            // Find where the actual data chunk begins
+            int pos = 12;
+            while (!(wav[pos] == 'd' && wav[pos + 1] == 'a' && wav[pos + 2] == 't' && wav[pos + 3] == 'a'))
+            {
+                pos += 4;
+                int chunkSize = BitConverter.ToInt32(wav, pos);
+                pos += 4 + chunkSize;
+            }
+            pos += 8;
+
+            SampleCount = (wav.Length - pos) / 2; // 16-bit audio
+            LeftChannel = new float[SampleCount];
+
+            // Convert 16-bit PCM data to float samples (-1.0 to 1.0)
+            int i = 0;
+            while (pos < wav.Length)
+            {
+                short sample = BitConverter.ToInt16(wav, pos);
+                LeftChannel[i] = sample / 32768.0f;
+                pos += 2;
+                i++;
+            }
+        }
+    }
+
+
 }
