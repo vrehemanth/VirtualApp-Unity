@@ -2483,6 +2483,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6259b16ffec294d4ab6cce17f00c20af, type: 3}
   m_PrefabInstance: {fileID: 673473161}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &773190229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2351121289802177058, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+  m_PrefabInstance: {fileID: 913170274}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &773190233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773190229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af524a944d8c3414e99aa879d6c7b074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlobalEventSystem
 --- !u!1 &775960294
 GameObject:
   m_ObjectHideFlags: 0
@@ -3001,7 +3018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7094977340588366727, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7173673413921246833, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
@@ -3018,6 +3035,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7400677500434752734, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2029047712}
+    - targetCorrespondingSourceObject: {fileID: 2351121289802177058, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 773190233}
   m_SourcePrefab: {fileID: 100100000, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
 --- !u!1001 &915044648
 PrefabInstance:
@@ -3150,6 +3170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 953964449}
   - component: {fileID: 953964448}
+  - component: {fileID: 953964450}
   m_Layer: 0
   m_Name: ClassroomController
   m_TagString: Untagged
@@ -3184,6 +3205,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &953964450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953964447}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e72f6c73f3530a42a1b10f7c806fe0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ForceCursorVisible
 --- !u!1 &1067017510
 GameObject:
   m_ObjectHideFlags: 0
@@ -3679,7 +3712,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1184792358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4485,6 +4518,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
+--- !u!20 &1409508094 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5126527961139664767, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+  m_PrefabInstance: {fileID: 913170274}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1418756126
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4822,7 +4860,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1555681458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7205,9 +7243,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2107252837}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 917fa3c1ad4d940449250dcc26d766b0, type: 3}
+  m_Script: {fileID: 11500000, guid: af0e0e8d8bb77914488ba40ad724707a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalTTS
+  m_EditorClassIdentifier: Assembly-CSharp::CanvasAutoFix
+  targetCamera: {fileID: 1409508094}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
